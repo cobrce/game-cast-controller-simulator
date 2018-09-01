@@ -61,7 +61,7 @@
 			this.MaximizeBox = false;
 			this.Name = "frmSimulator";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "frmController";
+			this.Text = "Controller simulator";
 			this.Load += new System.EventHandler(this.frmSimulator_Load);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmSimulator_KeyDown);
 			this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.frmSimulator_KeyPress);

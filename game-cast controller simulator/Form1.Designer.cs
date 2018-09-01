@@ -34,11 +34,14 @@
 			this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.btnPorts = new System.Windows.Forms.Button();
-			this.btnDisconnectPort = new System.Windows.Forms.Button();
 			this.btnConnect = new System.Windows.Forms.Button();
 			this.gpActions = new System.Windows.Forms.GroupBox();
-			this.lblPort = new System.Windows.Forms.Label();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.stlblPort = new System.Windows.Forms.ToolStripStatusLabel();
+			this.btnClosePort = new System.Windows.Forms.ToolStripDropDownButton();
+			this.closePortToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.gpActions.SuspendLayout();
+			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// txtURL
@@ -64,10 +67,10 @@
             this.columnHeader1,
             this.columnHeader2});
 			this.lvPorts.FullRowSelect = true;
-			this.lvPorts.Location = new System.Drawing.Point(6, 56);
+			this.lvPorts.Location = new System.Drawing.Point(6, 12);
 			this.lvPorts.MultiSelect = false;
 			this.lvPorts.Name = "lvPorts";
-			this.lvPorts.Size = new System.Drawing.Size(388, 132);
+			this.lvPorts.Size = new System.Drawing.Size(394, 152);
 			this.lvPorts.TabIndex = 3;
 			this.lvPorts.UseCompatibleStateImageBehavior = false;
 			this.lvPorts.View = System.Windows.Forms.View.Details;
@@ -85,23 +88,13 @@
 			// 
 			// btnPorts
 			// 
-			this.btnPorts.Location = new System.Drawing.Point(6, 21);
+			this.btnPorts.Location = new System.Drawing.Point(301, 170);
 			this.btnPorts.Name = "btnPorts";
-			this.btnPorts.Size = new System.Drawing.Size(99, 29);
+			this.btnPorts.Size = new System.Drawing.Size(99, 24);
 			this.btnPorts.TabIndex = 4;
-			this.btnPorts.Text = "Read ports";
+			this.btnPorts.Text = "Refresh";
 			this.btnPorts.UseVisualStyleBackColor = true;
 			this.btnPorts.Click += new System.EventHandler(this.btnPorts_Click);
-			// 
-			// btnDisconnectPort
-			// 
-			this.btnDisconnectPort.Location = new System.Drawing.Point(272, 21);
-			this.btnDisconnectPort.Name = "btnDisconnectPort";
-			this.btnDisconnectPort.Size = new System.Drawing.Size(122, 29);
-			this.btnDisconnectPort.TabIndex = 4;
-			this.btnDisconnectPort.Text = "Close port";
-			this.btnDisconnectPort.UseVisualStyleBackColor = true;
-			this.btnDisconnectPort.Click += new System.EventHandler(this.btnDisconnectPort_Click);
 			// 
 			// btnConnect
 			// 
@@ -117,7 +110,6 @@
 			// 
 			this.gpActions.Controls.Add(this.lvPorts);
 			this.gpActions.Controls.Add(this.btnPorts);
-			this.gpActions.Controls.Add(this.btnDisconnectPort);
 			this.gpActions.Enabled = false;
 			this.gpActions.Location = new System.Drawing.Point(4, 44);
 			this.gpActions.Name = "gpActions";
@@ -125,20 +117,48 @@
 			this.gpActions.TabIndex = 6;
 			this.gpActions.TabStop = false;
 			// 
-			// lblPort
+			// statusStrip1
 			// 
-			this.lblPort.AutoSize = true;
-			this.lblPort.Location = new System.Drawing.Point(7, 252);
-			this.lblPort.Name = "lblPort";
-			this.lblPort.Size = new System.Drawing.Size(0, 17);
-			this.lblPort.TabIndex = 7;
+			this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.stlblPort,
+            this.btnClosePort});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 245);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Size = new System.Drawing.Size(416, 25);
+			this.statusStrip1.TabIndex = 8;
+			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// stlblPort
+			// 
+			this.stlblPort.Name = "stlblPort";
+			this.stlblPort.Size = new System.Drawing.Size(65, 20);
+			this.stlblPort.Text = "              ";
+			// 
+			// btnClosePort
+			// 
+			this.btnClosePort.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.btnClosePort.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.closePortToolStripMenuItem});
+			this.btnClosePort.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnClosePort.Name = "btnClosePort";
+			this.btnClosePort.Size = new System.Drawing.Size(14, 23);
+			this.btnClosePort.Text = "toolStripDropDownButton1";
+			this.btnClosePort.Visible = false;
+			// 
+			// closePortToolStripMenuItem
+			// 
+			this.closePortToolStripMenuItem.Name = "closePortToolStripMenuItem";
+			this.closePortToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+			this.closePortToolStripMenuItem.Text = "Close port";
+			this.closePortToolStripMenuItem.Click += new System.EventHandler(this.closePortToolStripMenuItem_Click);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(416, 278);
-			this.Controls.Add(this.lblPort);
+			this.ClientSize = new System.Drawing.Size(416, 270);
+			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.gpActions);
 			this.Controls.Add(this.btnConnect);
 			this.Controls.Add(this.label1);
@@ -149,6 +169,8 @@
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "game-cast controller simulator";
 			this.gpActions.ResumeLayout(false);
+			this.statusStrip1.ResumeLayout(false);
+			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -160,12 +182,14 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.ListView lvPorts;
 		private System.Windows.Forms.Button btnPorts;
-		private System.Windows.Forms.Button btnDisconnectPort;
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
 		private System.Windows.Forms.Button btnConnect;
 		private System.Windows.Forms.GroupBox gpActions;
-		private System.Windows.Forms.Label lblPort;
+		private System.Windows.Forms.StatusStrip statusStrip1;
+		private System.Windows.Forms.ToolStripStatusLabel stlblPort;
+		private System.Windows.Forms.ToolStripDropDownButton btnClosePort;
+		private System.Windows.Forms.ToolStripMenuItem closePortToolStripMenuItem;
 	}
 }
 

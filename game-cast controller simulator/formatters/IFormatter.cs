@@ -12,7 +12,7 @@ namespace game_cast_controller_simulator.formatters
 	interface IFormatter
 	{
 		IEnumerable<IPortsInfo> PortsFormat(string jsonFormattedPorts);
-		string ConnectedFormat(string result);
+		string ConnectedFormat(string result, out bool connected);
 	}
 
 	class DefaultFormatter : IFormatter
@@ -25,13 +25,17 @@ namespace game_cast_controller_simulator.formatters
 			public bool connected;
 		}
 
-		public string ConnectedFormat(string result)
+		public string ConnectedFormat(string result,out bool connected)
 		{
+			connected = false;
 			try
 			{
 				var connectedJson = JsonConvert.DeserializeObject<ConnectedJson>(result);
 				if (connectedJson.connected)
+				{
+					connected = true;
 					return $"Port : {connectedJson.path}";
+				}
 				return "Port : None";
 			}
 			catch { }

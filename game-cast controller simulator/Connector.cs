@@ -75,13 +75,16 @@ namespace game_cast_controller_simulator
 			httpClient.PostAsync(ApiConnect, null);
 		}
 
-		internal string GetConnectedPort()
+		internal string GetConnectedPort(out bool connected)
 		{
+			connected = false;
 			var res = httpClient.GetAsync(ApiConnected).Result;
 			if (res.IsSuccessStatusCode)
-				return Formatter.ConnectedFormat(res.Content.ReadAsStringAsync().Result);
+				return Formatter.ConnectedFormat(res.Content.ReadAsStringAsync().Result,out connected);
 			else
+			{
 				return "N/A";
+			}
 		}
 	}
 }

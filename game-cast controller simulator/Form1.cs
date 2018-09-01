@@ -39,7 +39,7 @@ namespace game_cast_controller_simulator
 		private void btnConnect_Click(object sender, EventArgs e)
 		{
 			gpActions.Enabled = false;
-			lblPort.Text = "";
+			UpdateConnectedPort("", false);
 
 			string status = Connector.Create(txtURL.Text, DefaultFormatter.instance, out _connector);
 
@@ -57,7 +57,13 @@ namespace game_cast_controller_simulator
 
 		private void UpdateConnectedPort()
 		{
-			lblPort.Text = _connector.GetConnectedPort();
+			UpdateConnectedPort(_connector.GetConnectedPort(out bool connected),connected);
+		}
+
+		private void UpdateConnectedPort(string text,bool connected)
+		{
+			stlblPort.Text = text;
+			btnClosePort.Visible = connected;
 		}
 
 		private void EnableActions(bool enabled)
@@ -83,6 +89,7 @@ namespace game_cast_controller_simulator
 		private void btnConnectDisconnect_Click(object sender, EventArgs e)
 		{
 			_connector = null;
+			UpdateConnectedPort("", false);
 			EnableActions(false);
 		}
 
@@ -116,14 +123,7 @@ namespace game_cast_controller_simulator
 			return lvPorts.SelectedItems[0].SubItems[0].Text;
 		}
 
-		private void btnDisconnectPort_Click(object sender, EventArgs e)
-		{
-			CheckedCall(() =>
-			{
-				_connector.DisconnectPort();
-			});
-		}
-
+		
 		private void CheckedCall(Action action)
 		{
 			try
@@ -161,17 +161,25 @@ namespace game_cast_controller_simulator
 
 		private void StartSimulator()
 		{
-			//try
-			//{
+			try
+			{
 				using (SerialWriter writer = new SerialWriter(GetSelectedPort()))
 				using (frmSimulator sim = new frmSimulator(writer))
 				{
 					this.Hide();
 					sim.ShowDialog();
 				}
-			//}
-			//catch (Exception ex) { this.Show(); MessageBox.Show(this, ex.Message); }
+			}
+			catch (Exception ex) { this.Show(); MessageBox.Show(this, ex.Message); }
 			this.Show();
+		}
+
+		private void closePortToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			CheckedCall(() =>
+			{
+				_connector.DisconnectPort();
+			});
 		}
 	}
 }

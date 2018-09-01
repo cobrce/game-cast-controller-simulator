@@ -78,37 +78,40 @@
 			// 
 			// lblStart
 			// 
-			this.lblStart.AutoSize = true;
+			this.lblStart.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.lblStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
 			this.lblStart.Hilight = false;
-			this.lblStart.Location = new System.Drawing.Point(383, 239);
+			this.lblStart.Location = new System.Drawing.Point(371, 239);
 			this.lblStart.Name = "lblStart";
-			this.lblStart.Size = new System.Drawing.Size(46, 17);
+			this.lblStart.Size = new System.Drawing.Size(73, 18);
 			this.lblStart.TabIndex = 2;
 			this.lblStart.Text = "#Start";
+			this.lblStart.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblSelect
 			// 
-			this.lblSelect.AutoSize = true;
+			this.lblSelect.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.lblSelect.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
 			this.lblSelect.Hilight = false;
-			this.lblSelect.Location = new System.Drawing.Point(273, 239);
+			this.lblSelect.Location = new System.Drawing.Point(264, 239);
 			this.lblSelect.Name = "lblSelect";
-			this.lblSelect.Size = new System.Drawing.Size(55, 17);
+			this.lblSelect.Size = new System.Drawing.Size(82, 18);
 			this.lblSelect.TabIndex = 2;
 			this.lblSelect.Text = "#Select";
+			this.lblSelect.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblA
 			// 
-			this.lblA.AutoSize = true;
+			this.lblA.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.lblA.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
 			this.lblA.ForeColor = System.Drawing.Color.White;
 			this.lblA.Hilight = false;
-			this.lblA.Location = new System.Drawing.Point(632, 156);
+			this.lblA.Location = new System.Drawing.Point(602, 161);
 			this.lblA.Name = "lblA";
-			this.lblA.Size = new System.Drawing.Size(25, 17);
+			this.lblA.Size = new System.Drawing.Size(74, 17);
 			this.lblA.TabIndex = 2;
 			this.lblA.Text = "#A";
+			this.lblA.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblLeft
 			// 
@@ -116,7 +119,7 @@
 			this.lblLeft.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
 			this.lblLeft.ForeColor = System.Drawing.Color.White;
 			this.lblLeft.Hilight = false;
-			this.lblLeft.Location = new System.Drawing.Point(26, 215);
+			this.lblLeft.Location = new System.Drawing.Point(26, 143);
 			this.lblLeft.Name = "lblLeft";
 			this.lblLeft.Size = new System.Drawing.Size(77, 17);
 			this.lblLeft.TabIndex = 2;
@@ -129,7 +132,7 @@
 			this.lblRight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
 			this.lblRight.ForeColor = System.Drawing.Color.White;
 			this.lblRight.Hilight = false;
-			this.lblRight.Location = new System.Drawing.Point(156, 215);
+			this.lblRight.Location = new System.Drawing.Point(156, 143);
 			this.lblRight.Name = "lblRight";
 			this.lblRight.Size = new System.Drawing.Size(49, 17);
 			this.lblRight.TabIndex = 2;
@@ -137,39 +140,42 @@
 			// 
 			// lblDown
 			// 
-			this.lblDown.AutoSize = true;
+			this.lblDown.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.lblDown.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
 			this.lblDown.ForeColor = System.Drawing.Color.White;
 			this.lblDown.Hilight = false;
-			this.lblDown.Location = new System.Drawing.Point(108, 264);
+			this.lblDown.Location = new System.Drawing.Point(87, 263);
 			this.lblDown.Name = "lblDown";
-			this.lblDown.Size = new System.Drawing.Size(51, 17);
+			this.lblDown.Size = new System.Drawing.Size(82, 17);
 			this.lblDown.TabIndex = 2;
 			this.lblDown.Text = "#Down";
+			this.lblDown.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblUp
 			// 
-			this.lblUp.AutoSize = true;
+			this.lblUp.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.lblUp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
 			this.lblUp.ForeColor = System.Drawing.Color.White;
 			this.lblUp.Hilight = false;
-			this.lblUp.Location = new System.Drawing.Point(110, 93);
+			this.lblUp.Location = new System.Drawing.Point(97, 93);
 			this.lblUp.Name = "lblUp";
-			this.lblUp.Size = new System.Drawing.Size(34, 17);
+			this.lblUp.Size = new System.Drawing.Size(65, 17);
 			this.lblUp.TabIndex = 2;
 			this.lblUp.Text = "#Up";
+			this.lblUp.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// lblB
 			// 
-			this.lblB.AutoSize = true;
+			this.lblB.Anchor = System.Windows.Forms.AnchorStyles.Top;
 			this.lblB.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(26)))), ((int)(((byte)(26)))), ((int)(((byte)(26)))));
 			this.lblB.ForeColor = System.Drawing.Color.White;
 			this.lblB.Hilight = false;
-			this.lblB.Location = new System.Drawing.Point(533, 156);
+			this.lblB.Location = new System.Drawing.Point(503, 161);
 			this.lblB.Name = "lblB";
-			this.lblB.Size = new System.Drawing.Size(25, 17);
+			this.lblB.Size = new System.Drawing.Size(74, 17);
 			this.lblB.TabIndex = 2;
 			this.lblB.Text = "#B";
+			this.lblB.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// Controller
 			// 
