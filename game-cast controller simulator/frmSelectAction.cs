@@ -16,6 +16,7 @@ namespace game_cast_controller_simulator
 		OpenPort,
 		StartSimulator
 	}
+
 	public partial class frmSelectAction : Form
 	{
 		public Actions Action = Actions.None;

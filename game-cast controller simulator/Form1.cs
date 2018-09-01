@@ -181,5 +181,10 @@ namespace game_cast_controller_simulator
 				_connector.DisconnectPort();
 			});
 		}
+
+		private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+		{
+			Config.SaveToFile();
+		}
 	}
 }

@@ -13,53 +13,5 @@ namespace game_cast_controller_simulator.formatters
 	{
 		IEnumerable<IPortsInfo> PortsFormat(string jsonFormattedPorts);
 		string ConnectedFormat(string result, out bool connected);
-	}
-
-	class DefaultFormatter : IFormatter
-	{
-		public static DefaultFormatter instance = new DefaultFormatter();
-
-		class ConnectedJson
-		{
-			public string path;
-			public bool connected;
-		}
-
-		public string ConnectedFormat(string result,out bool connected)
-		{
-			connected = false;
-			try
-			{
-				var connectedJson = JsonConvert.DeserializeObject<ConnectedJson>(result);
-				if (connectedJson.connected)
-				{
-					connected = true;
-					return $"Port : {connectedJson.path}";
-				}
-				return "Port : None";
-			}
-			catch { }
-			return "Can't read port";
-		}
-
-		public IEnumerable<IPortsInfo> PortsFormat(string jsonFormattedPorts)
-		{
-			return JsonConvert.DeserializeObject<ICollection<PortInfo>>(jsonFormattedPorts);
-		}
-	}
-
-
-	interface IPortsInfo
-	{
-		ListViewItem GenerateListViewItem();
-	}
-	class PortInfo : IPortsInfo
-	{
-		public string comName, manufacturer, pnpId, locationId;
-		
-		public ListViewItem GenerateListViewItem()
-		{
-			return new ListViewItem(new string[] { comName, manufacturer });
-		}
-	}
+	}	
 }

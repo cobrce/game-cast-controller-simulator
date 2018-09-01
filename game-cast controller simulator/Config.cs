@@ -1,55 +1,136 @@
-﻿using System;
+﻿using game_cast_controller_simulator.keyswrappers;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using game_cast_controller_simulator.usercontrol;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace game_cast_controller_simulator
 {
 	class Config
 	{
-		static Dictionary<ControllerIndex, Dictionary<NesKeys, Keys>> KeyMapConfig { get; set; }
+		// actual config 
+		static Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>> _keyMapConfig;
+		static Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>> KeyMapConfig
+		{
+			get
+			{
+				return _keyMapConfig ?? (_keyMapConfig = LoadFromFile());
 
-		static Dictionary<ControllerIndex, Dictionary<NesKeys, Keys>> _defaultKeyMapConfig = new Dictionary<ControllerIndex, Dictionary<NesKeys, Keys>>
+			}
+			set => _keyMapConfig = value;
+		}
+
+
+		static string _keymapConfigFile;
+		public static string KeyMapConfigFile
+		{
+			get
+			{
+				return _keymapConfigFile ?? (_keymapConfigFile = Path.Combine(
+														Path.GetDirectoryName(typeof(Config).Assembly.Location),
+														"KeyMapConfig.json"
+														));
+			}
+		}
+
+		// default config
+		static Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>> _defaultKeyMapConfig = new Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>>
 		{
 			{
 				ControllerIndex.First,
-				new Dictionary<NesKeys, Keys>()
+				new Dictionary<NesKeys, KeyboardKey>()
 				{
-					{ NesKeys.b, Keys.O },
-					{ NesKeys.a, Keys.P },
-					{ NesKeys.select, Keys.Space },
-					{ NesKeys.start, Keys.Escape },
-					{ NesKeys.up, Keys.E },
-					{ NesKeys.down, Keys.D },
-					{ NesKeys.left, Keys.S },
-					{ NesKeys.right, Keys.F }
+					{ NesKeys.b, new KeyboardKey(Keys.O)},
+					{ NesKeys.a, new KeyboardKey(Keys.P )},
+					{ NesKeys.select, new KeyboardKey(Keys.Space )},
+					{ NesKeys.start, new KeyboardKey(Keys.Escape )},
+					{ NesKeys.up, new KeyboardKey(Keys.E )},
+					{ NesKeys.down, new KeyboardKey(Keys.D )},
+					{ NesKeys.left, new KeyboardKey(Keys.S )},
+					{ NesKeys.right, new KeyboardKey(Keys.F ) }
 				}
 			},
 			{
 				ControllerIndex.Second,
-				new Dictionary<NesKeys, Keys>()
+				new Dictionary<NesKeys, KeyboardKey>()
 				{
-					{ NesKeys.b, Keys.NumPad7 },
-					{ NesKeys.a, Keys.NumPad8 },
-					{ NesKeys.select, Keys.NumPad9 },
-					{ NesKeys.start, Keys.NumPad0 },
-					{ NesKeys.up, Keys.NumPad5 },
-					{ NesKeys.down, Keys.NumPad2 },
-					{ NesKeys.left, Keys.NumPad1 },
-					{ NesKeys.right, Keys.NumPad3 }
+					{ NesKeys.b, new KeyboardKey(Keys.NumPad7)},
+					{ NesKeys.a, new KeyboardKey(Keys.NumPad8)},
+					{ NesKeys.select, new KeyboardKey(Keys.NumPad9)},
+					{ NesKeys.start, new KeyboardKey(Keys.NumPad0)},
+					{ NesKeys.up, new KeyboardKey(Keys.NumPad5)},
+					{ NesKeys.down, new KeyboardKey(Keys.NumPad2)},
+					{ NesKeys.left, new KeyboardKey(Keys.NumPad1)},
+					{ NesKeys.right, new KeyboardKey(Keys.NumPad3)}
 				}
 			}
 		};
 
-		internal static Keys GetKeyMapConfig(ControllerIndex index, NesKeys neskey)
+		internal static KeyboardKey GetKeyMapConfig(ControllerIndex index, NesKeys neskey)
 		{
-			if (KeyMapConfig?.ContainsKey(index) == true && KeyMapConfig[index].ContainsKey(neskey))
-				return KeyMapConfig[index][neskey];
-			else
-				return _defaultKeyMapConfig[index][neskey];
+			CheckConfigForNull();
+			CheckConfigController(index);
+			CheckConfigNesKey(index, neskey);
+
+			return KeyMapConfig[index][neskey];
+		}
+
+		private static void CheckConfigNesKey(ControllerIndex index, NesKeys neskey)
+		{
+			if (!KeyMapConfig[index].ContainsKey(neskey))
+				KeyMapConfig[index][neskey] = _defaultKeyMapConfig[index][neskey].Clone();
+		}
+
+		private static void CheckConfigController(ControllerIndex index)
+		{
+			if (!KeyMapConfig.ContainsKey(index))
+				KeyMapConfig[index] = new Dictionary<NesKeys, KeyboardKey>();
+		}
+
+		private static void CheckConfigForNull()
+		{
+			if (KeyMapConfig == null)
+				KeyMapConfig = new Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>>();
+		}
+
+		internal static void SaveToFile()
+		{
+			try
+			{
+				string json = JsonConvert.SerializeObject(KeyMapConfig, Formatting.Indented);
+				File.WriteAllText(KeyMapConfigFile, json);
+			}
+			catch { }
+		}
+
+		private static Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>> LoadFromFile()
+		{
+			Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>> config;
+			try
+			{
+				config = JsonConvert.DeserializeObject<Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>>>(File.ReadAllText(KeyMapConfigFile));
+			}
+			catch
+			{
+				// this case will yield a clone of the default config
+				config = new Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>>();
+			}
+			CompleteConfig(config);
+			return config;
+		}
+
+		private static void CompleteConfig(Dictionary<ControllerIndex, Dictionary<NesKeys, KeyboardKey>> config)
+		{
+			foreach (var key in _defaultKeyMapConfig.Keys)
+			{
+				if (!config.ContainsKey(key))
+					config[key] = new Dictionary<NesKeys, KeyboardKey>();
+
+				foreach (var subkey in _defaultKeyMapConfig[key].Keys)
+					if (!config[key].ContainsKey(subkey))
+						config[key][subkey] = _defaultKeyMapConfig[key][subkey].Clone();
+			}
 		}
 	}
 }
