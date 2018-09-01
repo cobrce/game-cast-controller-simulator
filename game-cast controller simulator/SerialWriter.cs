@@ -7,7 +7,7 @@ using System.IO.Ports;
 
 namespace game_cast_controller_simulator
 {
-	public class SerialWriter
+	public class SerialWriter:IDisposable
 	{
 		public string PortName { get; }
 		private SerialPort _serialPort;
@@ -19,13 +19,13 @@ namespace game_cast_controller_simulator
 			_serialPort.Open();
 		}
 
-		internal void WriteState(byte state)
+		internal void WriteState(byte controller,byte state)
 		{
-			byte[] data = new byte[] { 00, 01, state };
+			byte[] data = new byte[] { controller, 01, state };
 			_serialPort.Write(data, 0, data.Length);
 		}
 
-		~SerialWriter()
+		public void Dispose()
 		{
 			_serialPort.Close();
 			_serialPort.Dispose();

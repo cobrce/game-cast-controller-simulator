@@ -13,81 +13,70 @@ namespace game_cast_controller_simulator
 {
 	public partial class frmSimulator : Form
 	{
-		private SerialWriter _serialWriter;
-
-		int state = 0xff;
-
-
-		enum NesKeys
-		{
-			a,
-			b,
-			select,
-			start,
-			up,
-			down,
-			left,
-			right
-		}
-
-		Dictionary<Keys, NesKeys> KeyBitindex = new Dictionary<Keys, NesKeys>()
-		{
-			{Keys.R, NesKeys.a },
-			{Keys.E, NesKeys.b},
-			{Keys.Space, NesKeys.select},
-			{Keys.Escape, NesKeys.start},
-			{Keys.Up, NesKeys.up },
-			{Keys.Down, NesKeys.down},
-			{Keys.Left, NesKeys.left},
-			{Keys.Right, NesKeys.right}
-		};
-
+		
 
 		public frmSimulator(SerialWriter serialWriter)
 		{
-			_serialWriter = serialWriter;
+
 			InitializeComponent();
+			KeyPreview = true;
+
+			controller1.SerialWriter = serialWriter;
+			controller1.InitKeyMapDictionary(ControllerIndex.First);
+			controller1.OnCustomize += ControllerN_OnCustomize;
+
+			controller2.SerialWriter = serialWriter;
+			controller2.InitKeyMapDictionary(ControllerIndex.Second);
+			controller2.OnCustomize += ControllerN_OnCustomize;
+		}
+
+
+		// make sure that only one on is being customized
+		private void ControllerN_OnCustomize(object sender, EventArgs e)
+		{
+			if (sender is usercontrol.Controller controller)
+			{
+				switch (controller.Index)
+				{
+					case ControllerIndex.First:
+						controller2.CustomizeStop();
+						break;
+					case ControllerIndex.Second:
+						controller1.CustomizeStop();
+						break;
+				}
+			}
 		}
 
 		private void frmSimulator_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (TryGetKeyMask(e.KeyCode, true, out int mask))
+			if (!controller1.Customizing && !controller2.Customizing)
 			{
-				state &= mask;
-				SendKey();
+				controller1.KeyDown(e.KeyCode);
+				controller2.KeyDown(e.KeyCode);
 			}
 		}
 
 		private void frmSimulator_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (TryGetKeyMask(e.KeyCode, false, out int mask))
+			if (!controller1.Customizing && !controller2.Customizing)
 			{
-				state |= mask;
-				SendKey();
+				controller1.KeyUp(e.KeyCode);
+				controller2.KeyUp(e.KeyCode);
 			}
 		}
 
-		private bool TryGetKeyMask(Keys key, bool negatif, out int mask)
-		{
-			mask = 0;
-			if (KeyBitindex.TryGetValue(key, out NesKeys value))
-			{
-				mask = 1 << (int)value;
-				if (negatif)
-					mask = ~mask;
-				return true;
-			}
-			return false;
-		}
-
-		private void SendKey()
-		{
-			_serialWriter.WriteState((byte)state);
-		}
 
 		private void frmSimulator_Load(object sender, EventArgs e)
 		{
-			SendKey();
+			controller1.AllButtonsUp();
+			controller2.AllButtonsUp();
+		}
+
+		private void frmSimulator_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			controller1.KeyPress(e.KeyChar);
+			controller2.KeyPress(e.KeyChar);
 		}
 	}
 }

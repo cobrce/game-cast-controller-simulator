@@ -105,13 +105,13 @@ namespace game_cast_controller_simulator
 			CheckedCall(() =>
 			{
 				if (lvPorts.SelectedItems?.Count > 0)
-					_connector.ConnectToPort(SelectedPort());
+					_connector.ConnectToPort(GetSelectedPort());
 				else
 					MessageBox.Show(this, "Please select a port");
 			});
 		}
 
-		private string SelectedPort()
+		private string GetSelectedPort()
 		{
 			return lvPorts.SelectedItems[0].SubItems[0].Text;
 		}
@@ -161,15 +161,16 @@ namespace game_cast_controller_simulator
 
 		private void StartSimulator()
 		{
-			try
-			{
-				using (frmSimulator sim = new frmSimulator(new SerialWriter(SelectedPort())))
+			//try
+			//{
+				using (SerialWriter writer = new SerialWriter(GetSelectedPort()))
+				using (frmSimulator sim = new frmSimulator(writer))
 				{
 					this.Hide();
 					sim.ShowDialog();
 				}
-			}
-			catch (Exception ex) { MessageBox.Show(this, ex.Message); }
+			//}
+			//catch (Exception ex) { this.Show(); MessageBox.Show(this, ex.Message); }
 			this.Show();
 		}
 	}
